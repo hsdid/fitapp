@@ -8,6 +8,11 @@ var app = new Vue({
         newProduct: {pname:"", kcal_100:"", protein_100:"", fat_100:"", carb_100:""},
         addProduct: {user_id:0, pname:"", pweight:0, kcal:0 , protein: 0, fat:0, carb:0},
         cart: [],
+        currentProduct: {},
+        totalKcal: 0,
+        totalProtein: 0,
+        totalFat: 0,
+        totalCarb: 0,
         addtoDb: true,
         showAddModal: false,
         showAddModalDb: false
@@ -51,17 +56,29 @@ var app = new Vue({
             })
 
         },
-        
+        ///product witch will be show in cart
         getProducts() {
             axios.get("http://localhost/fitapplication/classes/proces.php?action=readproducts").then(function(response) {
                 if(response.data.error) {
                     app.errorMsg = response.data.message;
                 } else {
                     app.cart = response.data.products;
-                    console.log('udalo sie ');
+                    //console.log('udalo sie ');
+                    for(product in app.cart){
                         
+                        app.totalKcal += parseFloat(app.cart[product].product_kcal);
+                        app.totalProtein += parseFloat(app.cart[product].product_protein);
+                        app.totalFat += parseFloat(app.cart[product].product_fat);
+                        app.totalCarb += parseFloat(app.cart[product].product_carb);
+                    }   
+                    app.totalKcal = app.totalKcal.toFixed(1);
+                    app.totalProtein = app.totalProtein.toFixed(1);
+                    app.totalFat = app.totalFat.toFixed(1);
+                    app.totalCarb = app.totalCarb.toFixed(1);
+                    
+
                     app.successMsg = response.data.message;
-                                
+                    
                     console.log(app.cart);
                    
                     app.clearMsg();
@@ -173,7 +190,26 @@ var app = new Vue({
                 app.showAddModal = !app.showAddModal;
             }
 
+           
 
+        },
+        deleteProduct(e) {
+            e.preventDefault();
+            var formData = app.toFormData(app.currentProduct);
+            console.log(app.currentProduct);
+            axios.post("http://localhost/fitapplication/classes/proces.php?action=delete", formData).then(function(response){
+                app.currentProduct = {};    
+                if (response.data.error){
+                        app.errorMsg = response.data.message;
+                    } 
+                else {
+                    app.successMsg = response.data.message;
+                    app.getProducts();
+                }
+            });
+        },
+        selectProduct(product) {
+            app.currentProduct = product;
 
         },
         toFormData(obj) {

@@ -92,4 +92,15 @@ class Product {
        
         echo json_encode($this->result);
     }
+    public function deleteFromCart($id){
+
+        $query = "DELETE FROM cart WHERE id_cart = '$id'";
+        if ($this->db->delete($query)) {
+            $this->result['error'] = false;
+            $this->result['message'] = 'product has been removed';
+        } else {
+            $this->result['error'] = true;
+            $this->result['message'] = 'cant remove product';
+        }
+    }
 }

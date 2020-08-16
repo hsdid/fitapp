@@ -79,23 +79,23 @@ if (!$_SESSION['logged']) {
                                 <tr v-for="product in cart">
                                     <td>{{product.product_name}}</td>
                                     <td>{{product.product_weight}}g</td>
-                                    <td>{{product.product_kcal}}kcal</td>
+                                    <td>{{product.product_kcal}} kcal</td>
                                     <td>{{product.product_protein}}g</td>
                                     <td>{{product.product_fat}}g</td>
                                     <td>{{product.product_carb}}g</td>
                                     <td>
-                                        <a href="" class="lead text-info"><i class="fas fa-pencil-alt"></i></a>
+                                        <a href="" @click="selectProduct(product);" class="lead text-info"><i class="fas fa-pencil-alt"></i></a>
                                     </td>
                                     <td>
-                                        <a href="" class="lead text-danger"><i class="fas fa-trash-alt"></i></a>
+                                        <a href="" @click="selectProduct(product); deleteProduct($event);" class="lead text-danger"><i class="fas fa-trash-alt"></i></a>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th colspan=2>Your total macro</th>
-                                    <td>kcal</td>
-                                    <td>protein g</td>
-                                    <td>fat g</td>
-                                    <td>carb g</td>
+                                    <td>{{totalKcal}} kcal</td>
+                                    <td>{{totalProtein}} g</td>
+                                    <td>{{totalFat}} g</td>
+                                    <td>{{totalCarb}} g</td>
                                     <td colspan=2></td>
                                 </tr>
                                     

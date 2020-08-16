@@ -84,6 +84,12 @@ if ($action == 'AddProductDb')
     $product->addToDB($pname,$pkcal_100,$pprotein_100,$pfat_100,$pcarb_100);
 }
 
+if ($action == 'delete') {
+    $id = $_POST['id_cart'];
+
+    $product->deleteFromCart($id);
+}
+
    
 
 
