@@ -9,13 +9,15 @@ var app = new Vue({
         addProduct: {user_id:0, pname:"", pweight:0, kcal:0 , protein: 0, fat:0, carb:0},
         cart: [],
         currentProduct: {},
-        totalKcal: 0,
-        totalProtein: 0,
-        totalFat: 0,
-        totalCarb: 0,
+        totalKcal: 0.0,
+        totalProtein: 0.0,
+        totalFat: 0.0,
+        totalCarb: 0.0,
         addtoDb: true,
         showAddModal: false,
-        showAddModalDb: false
+        showAddModalDb: false,
+        showEditModal: false
+
     },
     mounted() {
        
@@ -53,17 +55,23 @@ var app = new Vue({
                     app.successMsg = response.data.message;
                     location.replace("http://localhost/fitapplication/login.php");
                 }
-            })
+            });
 
         },
         ///product witch will be show in cart
         getProducts() {
-            axios.get("http://localhost/fitapplication/classes/proces.php?action=readproducts").then(function(response) {
+                axios.get("http://localhost/fitapplication/classes/proces.php?action=readproducts").then(function(response) {
+                
+                    app.totalKcal = 0;
+                    app.totalProtein = 0;
+                    app.totalFat = 0;
+                    app.totalCarb = 0;
+                
                 if(response.data.error) {
                     app.errorMsg = response.data.message;
                 } else {
                     app.cart = response.data.products;
-                    //console.log('udalo sie ');
+                    
                     for(product in app.cart){
                         
                         app.totalKcal += parseFloat(app.cart[product].product_kcal);
@@ -71,16 +79,14 @@ var app = new Vue({
                         app.totalFat += parseFloat(app.cart[product].product_fat);
                         app.totalCarb += parseFloat(app.cart[product].product_carb);
                     }   
+                    
                     app.totalKcal = app.totalKcal.toFixed(1);
                     app.totalProtein = app.totalProtein.toFixed(1);
                     app.totalFat = app.totalFat.toFixed(1);
                     app.totalCarb = app.totalCarb.toFixed(1);
-                    
-
-                    app.successMsg = response.data.message;
-                    
-                    console.log(app.cart);
                    
+                    app.successMsg = response.data.message;
+                    //console.log(app.cart);
                     app.clearMsg();
                 }
             });
@@ -93,6 +99,10 @@ var app = new Vue({
         showModel(e) {
             e.preventDefault();
             app.showAddModal = !app.showAddModal;
+        },
+        showEditM(e,) {
+            e.preventDefault();
+           app.showEditModal = !app.showEditModal;
         },
 
         addProductDB(e) {
@@ -193,8 +203,26 @@ var app = new Vue({
            
 
         },
-        deleteProduct(e) {
+        updateProduct(e) {
             e.preventDefault();
+            app.showEditModal = !app.showEditModal;
+
+            var formData = app.toFormData(app.currentProduct);
+
+            axios.post('http://localhost/fitapplication/classes/proces.php?action=update',formData).then(function(response){
+               app.currentProduct = {};
+               if (response.data.error) {
+                    app.errorMsg = response.data.message;
+               } else {
+                    console.log('update');
+                    app.successMsg = response.data.message;
+                    app.getProducts();
+               }
+            })
+
+        },
+        deleteProduct() {
+           
             var formData = app.toFormData(app.currentProduct);
             console.log(app.currentProduct);
             axios.post("http://localhost/fitapplication/classes/proces.php?action=delete", formData).then(function(response){

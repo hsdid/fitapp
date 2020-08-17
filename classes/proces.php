@@ -90,6 +90,11 @@ if ($action == 'delete') {
     $product->deleteFromCart($id);
 }
 
+if ($action == 'update') {
+    $id = $_POST['id_cart'];
+    $pweight = $_POST['product_weight'];
+    $product->updateProduct($id,$pweight);
+}
    
 
 

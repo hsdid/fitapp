@@ -103,4 +103,19 @@ class Product {
             $this->result['message'] = 'cant remove product';
         }
     }
+
+    public function updateProduct($id,$pweight){
+        $query = "UPDATE cart 
+        SET product_weight='$pweight' 
+        WHERE id_cart = '$id'";
+        
+        if ($this->db->update($query)) {
+            $this->result['error'] = false;
+            $this->result['message'] = 'product has been updated';
+        } else {
+            $this->result['error'] = true;
+            $this->result['message'] = 'cant update product';
+        }
+       
+    }
 }

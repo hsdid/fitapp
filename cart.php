@@ -41,6 +41,9 @@ if (!$_SESSION['logged']) {
                 right: 0;
                 background: rgba(0, 0, 0, 0.6); 
             }
+            .total_macro{
+                background-color: #5AAC56;
+            }
         </style>
     </head>
     <body>
@@ -84,13 +87,13 @@ if (!$_SESSION['logged']) {
                                     <td>{{product.product_fat}}g</td>
                                     <td>{{product.product_carb}}g</td>
                                     <td>
-                                        <a href="" @click="selectProduct(product);" class="lead text-info"><i class="fas fa-pencil-alt"></i></a>
+                                        <a href="" @click="selectProduct(product); showEditM($event);" class="lead text-info"><i class="fas fa-pencil-alt"></i></a>
                                     </td>
                                     <td>
-                                        <a href="" @click="selectProduct(product); deleteProduct($event);" class="lead text-danger"><i class="fas fa-trash-alt"></i></a>
+                                        <a href="" @click="selectProduct(product); deleteProduct();" class="lead text-danger"><i class="fas fa-trash-alt"></i></a>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr class="total_macro">
                                     <th colspan=2>Your total macro</th>
                                     <td>{{totalKcal}} kcal</td>
                                     <td>{{totalProtein}} g</td>
@@ -142,7 +145,7 @@ if (!$_SESSION['logged']) {
                                 </div>
                             </div>
                         </div>
-
+                        <!-- add product to curent cart -->
                         <div id="overlay" v-if="showAddModal">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -170,7 +173,35 @@ if (!$_SESSION['logged']) {
                                 </div>
                             </div>
                         </div>
+                        <!-- edit product in cart -->
+                        <div id="overlay" v-if="showEditModal">
                             
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                <div class="alert alert-danger " v-if="errorMsg">
+                                    {{ errorMsg }}
+                                </div>
+                            
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">update product</h5>
+                                        <!-- <button type="button" class="close" @click="showModelDb($event);">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button> -->
+                                        <button class="btn block" @click="showEditM($event); clearMsg();">back</button>
+                                    </div>
+                                    <div class="modal-body p-4">
+                                        <form action="#" method="post">
+                                            <div class="form-group">
+                                                <input type="text" name="pweight" class="form-control form-control-lg" placeholder="currentProduct.product_weight" v-model="currentProduct.product_weight">
+                                            </div>                  
+                                            <div class="form-group">
+                                                <button class="btn btn-info btn-block btn-lg" id="addSubmit" @click="updateProduct($event); clearMsg(); s">Add Product</button>
+                                            </div>                                                                           
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="col"> 
 
