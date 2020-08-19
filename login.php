@@ -6,6 +6,7 @@ if ($_SESSION['logged']) {
     header("location:cart.php");
     exit();
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

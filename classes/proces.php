@@ -7,7 +7,7 @@ ob_start();
 
 //$_SESSION['logged'] = false;
 //$_SESSION['user_id'] = 0;
-
+ $_SESSION['id'] = 0;
 $user = new Validation();
 $product = new Product();
 $action = '';
@@ -38,10 +38,10 @@ if ($action == 'pname') {
 }
 if ($action == 'readProduct'){
     
-    
     $pname = $_SESSION['name'];
     $product->readProdukt($pname);
 }
+
 if ($action == 'create_account') {
     
     $name = $_POST['name'];
@@ -90,14 +90,23 @@ if ($action == 'delete') {
     $product->deleteFromCart($id);
 }
 
-if ($action == 'update') {
+if ($action == 'readUpdate') {
+    //$id = $_POST['id_cart'];
+    $pname = $_POST['product_name'];
+    $product->readProdukt($pname);
+} 
+if ($action == 'postUpdated') {
+    
     $id = $_POST['id_cart'];
-    $pweight = $_POST['product_weight'];
-    $product->updateProduct($id,$pweight);
+    $pweight =$_POST['pweight'];
+    $kcal = $_POST['kcal'];
+    $protein = $_POST['protein'];
+    $fat = $_POST['fat'];
+    $carb = $_POST['carb'];
+    $_SESSION['id'] = $_POST['id_cart'];
+
+    $product->updateProduct($id,$pweight,$kcal,$protein,$fat,$carb);
+
 }
    
-
-
-
-
 ?>

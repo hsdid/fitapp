@@ -102,12 +102,17 @@ class Product {
             $this->result['error'] = true;
             $this->result['message'] = 'cant remove product';
         }
+        
+        echo json_encode($this->result);
     }
 
-    public function updateProduct($id,$pweight){
+    public function updateProduct($id,$pweight,$kcal,$protein,$fat,$carb){
         $query = "UPDATE cart 
-        SET product_weight='$pweight' 
-        WHERE id_cart = '$id'";
+        SET 
+        product_weight = '$pweight', product_kcal = '$kcal',
+        product_protein ='$protein',product_fat = '$fat', product_carb = '$carb' 
+        WHERE 
+        id_cart = '$id'";
         
         if ($this->db->update($query)) {
             $this->result['error'] = false;
@@ -116,6 +121,7 @@ class Product {
             $this->result['error'] = true;
             $this->result['message'] = 'cant update product';
         }
+        echo json_encode($this->result);
        
     }
 }

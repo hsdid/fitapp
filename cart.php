@@ -50,12 +50,13 @@ if (!$_SESSION['logged']) {
         <div id="app">
             <div class="container">
                 <div class="row mt-4">
-                    <div class="col-lg-8 col">
+                    <div class="col-lg-10">
                                 <div class="alert alert-success" v-if="successMsg">
                                     {{ successMsg }}
                                 </div>
-                                
+                                <?php echo $_SESSION['id'];?>
                         <table class="table table-bordered table-striped text-center">
+                            
                             <thead>
                                 <tr>
                                     <td  colspan=8> 
@@ -195,7 +196,7 @@ if (!$_SESSION['logged']) {
                                                 <input type="text" name="pweight" class="form-control form-control-lg" placeholder="currentProduct.product_weight" v-model="currentProduct.product_weight">
                                             </div>                  
                                             <div class="form-group">
-                                                <button class="btn btn-info btn-block btn-lg" id="addSubmit" @click="updateProduct($event); clearMsg(); s">Add Product</button>
+                                                <button class="btn btn-info btn-block btn-lg" id="addSubmit" @click="updateProduct($event); clearMsg();">Add Product</button>
                                             </div>                                                                           
                                         </form>
                                     </div>
@@ -203,9 +204,9 @@ if (!$_SESSION['logged']) {
                             </div>
                         </div>
                     </div>
-                    <div class="col"> 
+                    <!-- <div class="col"> 
 
-                    </div>
+                    </div> -->
                 </div>
             </div>         
         </div>
